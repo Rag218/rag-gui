@@ -1,0 +1,8 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local evento = ReplicatedStorage:WaitForChild("AplicarDecal")
+
+local botao = script.Parent
+
+botao.MouseButton1Click:Connect(function()
+	evento:FireServer() -- Envia o pedido para o servidor
+end)
