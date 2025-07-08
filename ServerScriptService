@@ -1,0 +1,31 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local evento = ReplicatedStorage:WaitForChild("AplicarDecal")
+
+-- ID do Decal a ser aplicado
+local decalId = "rbxassetid://102420695135426" -- ⬅️ Substitua por um decal real
+
+-- Quando o cliente solicitar...
+evento.OnServerEvent:Connect(function(player)
+	for _, part in ipairs(workspace:GetDescendants()) do
+		if part:IsA("BasePart") and not part:IsDescendantOf(game.Players) then
+			-- Evita duplicar decals
+			local jaTem = false
+			for _, filho in ipairs(part:GetChildren()) do
+				if filho:IsA("Decal") and filho.Texture == decalId then
+					jaTem = true
+					break
+				end
+			end
+
+			if not jaTem then
+				local faces = {"Top", "Bottom", "Front", "Back", "Left", "Right"}
+				for _, face in ipairs(faces) do
+					local decal = Instance.new("Decal")
+					decal.Texture = decalId
+					decal.Face = Enum.NormalId[face]
+					decal.Parent = part
+				end
+			end
+		end
+	end
+end)
